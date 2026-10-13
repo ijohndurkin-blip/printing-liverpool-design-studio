@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Design Your Own T-Shirt | Printing Liverpool</title>
+  <meta name="description" content="Upload your design, preview it on a garment, choose sizes and get an instant quote. Same-day t-shirt printing in Liverpool.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Anton&family=Bebas+Neue&family=Pacifico&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="demo-banner" role="note">
+    Concept demo prepared for Printing Liverpool. Prices and options are examples only, and no orders are taken.
+  </div>
+
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="logo" href="#top" aria-label="Printing Liverpool home">
+        <span class="logo-mark">PL</span>
+        <span class="logo-text">Printing <strong>Liverpool</strong></span>
+      </a>
+      <nav class="main-nav" aria-label="Main">
+        <a href="#studio" class="active">Design Studio</a>
+        <a href="#how">How it works</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <a class="btn btn-small btn-outline header-cta" href="#order">Get a quote</a>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="wrap hero-inner">
+        <div>
+          <p class="eyebrow">Same-day printing in Liverpool · No minimum order</p>
+          <h1>Upload your design.<br>See it on a shirt.<br>Collect it today.</h1>
+          <p class="lead">Upload your artwork and place it on the garment. Pick your sizes and you'll see the price straight away. We check every file before it goes to print.</p>
+          <div class="hero-actions">
+            <a class="btn" href="#studio">Start designing</a>
+            <button class="btn btn-ghost" type="button" id="heroSample">Try a sample design</button>
+          </div>
+        </div>
+        <ul class="hero-points">
+          <li><strong>3-hour</strong> express option</li>
+          <li><strong>1 shirt</strong> or 1,000</li>
+          <li><strong>DTG, screen, vinyl</strong> &amp; embroidery</li>
+          <li><strong>Collect</strong> or same-day courier</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="studio" class="studio wrap" aria-label="Design studio">
+      <!-- LEFT: preview -->
+      <div class="preview-col">
+        <div class="view-toggle" role="tablist" aria-label="Garment side">
+          <button role="tab" class="seg active" data-side="front" aria-selected="true">Front</button>
+          <button role="tab" class="seg" data-side="back" aria-selected="false">Back</button>
+        </div>
+
+        <div class="stage" id="stage">
+          <svg id="garment" viewBox="0 0 500 500" aria-hidden="true"></svg>
+          <div class="print-area" id="printArea" aria-label="Print area">
+            <span class="print-area-label">Print area</span>
+            <div class="layers" id="layers"></div>
+          </div>
+        </div>
+
+        <div class="preview-tools">
+          <label class="check"><input type="checkbox" id="showGuides" checked> Show print area</label>
+          <button class="btn btn-small btn-ghost" type="button" id="downloadMockup">Download mockup (PNG)</button>
+        </div>
+
+        <div id="qualityNote" class="quality" hidden></div>
+      </div>
+
+      <!-- RIGHT: controls -->
+      <div class="controls-col">
+        <!-- Step 1 -->
+        <fieldset class="step">
+          <legend><span class="step-num">1</span> Choose a product</legend>
+          <div class="product-grid" id="productGrid"></div>
+          <p class="label">Colour: <span id="colourName"></span></p>
+          <div class="swatches" id="swatches"></div>
+        </fieldset>
+
+        <!-- Step 2 -->
+        <fieldset class="step">
+          <legend><span class="step-num">2</span> Add your design</legend>
+
+          <label class="dropzone" id="dropzone" for="fileInput">
+            <input type="file" id="fileInput" accept="image/png,image/jpeg,image/svg+xml,image/webp" hidden>
+            <svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path fill="currentColor" d="M12 3l5 5h-3v6h-4V8H7l5-5zm-7 14h14v2H5v-2z"/></svg>
+            <span><strong>Drop your artwork here</strong> or click to browse</span>
+            <small>PNG, JPG, SVG or WEBP up to 20&nbsp;MB. For the best result use a transparent PNG at 300&nbsp;dpi.</small>
+          </label>
+
+          <div class="add-text">
+            <input type="text" id="textInput" placeholder="…or add text, e.g. AI SUMMIT 2026" maxlength="40" aria-label="Text to add">
+            <button type="button" class="btn btn-small" id="addText">Add text</button>
+          </div>
+
+          <div class="layer-editor" id="layerEditor" hidden>
+            <div class="layer-editor-head">
+              <strong id="layerTitle">Selected layer</strong>
+              <button type="button" class="link danger" id="removeLayer">Remove</button>
+            </div>
+            <div class="text-options" id="textOptions" hidden>
+              <label>Text
+                <input type="text" id="editText" maxlength="40">
+              </label>
+              <div class="row">
+                <label>Font
+                  <select id="fontSelect">
+                    <option value="Anton">Anton</option>
+                    <option value="Bebas Neue">Bebas Neue</option>
+                    <option value="Space Grotesk">Space Grotesk</option>
+                    <option value="Inter">Inter</option>
+                    <option value="Pacifico">Pacifico</option>
+                  </select>
+                </label>
+                <label>Colour
+                  <input type="color" id="textColour" value="#c8102e">
+                </label>
+              </div>
+            </div>
+            <label>Size <input type="range" id="sizeRange" min="10" max="100" value="60"></label>
+            <label>Rotate <input type="range" id="rotateRange" min="-45" max="45" value="0"></label>
+            <div class="row">
+              <button type="button" class="btn btn-small btn-ghost" id="centreLayer">Centre</button>
+              <button type="button" class="btn btn-small btn-ghost" id="fitLayer">Fit to print area</button>
+            </div>
+            <p class="hint">Drag the design on the preview to move it.</p>
+          </div>
+        </fieldset>
+
+        <!-- Step 3 -->
+        <fieldset class="step">
+          <legend><span class="step-num">3</span> Print method</legend>
+          <div class="methods" id="methods"></div>
+        </fieldset>
+
+        <!-- Step 4 -->
+        <fieldset class="step">
+          <legend><span class="step-num">4</span> Sizes &amp; quantities</legend>
+          <div class="sizes" id="sizes"></div>
+          <p class="hint" id="breaksHint">Bulk discounts: 10+ save 5% · 25+ save 10% · 50+ save 15% · 100+ save 20%</p>
+        </fieldset>
+
+        <!-- Step 5 -->
+        <fieldset class="step">
+          <legend><span class="step-num">5</span> Turnaround &amp; delivery</legend>
+          <div class="options" id="turnaround">
+            <label class="option"><input type="radio" name="turnaround" value="standard" checked>
+              <span><strong>Standard</strong><small>3–5 working days</small></span><em>Included</em></label>
+            <label class="option"><input type="radio" name="turnaround" value="nextday">
+              <span><strong>Next day</strong><small>Ready by 12pm tomorrow</small></span><em>+15%</em></label>
+            <label class="option"><input type="radio" name="turnaround" value="sameday">
+              <span><strong>Same day</strong><small>Ready in about 3 hours</small></span><em>+25%</em></label>
+          </div>
+          <div class="options" id="delivery">
+            <label class="option"><input type="radio" name="delivery" value="collect" checked>
+              <span><strong>Collect in Liverpool</strong><small>We'll text you when it's ready</small></span><em>Free</em></label>
+            <label class="option"><input type="radio" name="delivery" value="courier">
+              <span><strong>Same-day courier</strong><small>Liverpool &amp; Merseyside, live tracking</small></span><em>£8.00</em></label>
+          </div>
+        </fieldset>
+      </div>
+    </section>
+
+    <!-- Summary + order -->
+    <section id="order" class="order wrap" aria-label="Quote and order">
+      <div class="summary card">
+        <h2>Your quote</h2>
+        <dl class="summary-list" id="summaryList"></dl>
+        <div class="summary-total">
+          <span>Total <small>inc. VAT</small></span>
+          <strong id="totalPrice">£0.00</strong>
+        </div>
+        <p class="per-item" id="perItem"></p>
+        <ul class="warnings" id="warnings"></ul>
+      </div>
+
+      <form class="card order-form" id="orderForm" novalidate>
+        <h2>Send your order</h2>
+        <p class="muted">We'll check your artwork and send you a proof before we print anything. You don't pay until you approve it.</p>
+        <div class="row">
+          <label>Your name<input name="name" required autocomplete="name"></label>
+          <label>Email<input name="email" type="email" required autocomplete="email"></label>
+        </div>
+        <div class="row">
+          <label>Phone<input name="phone" type="tel" autocomplete="tel"></label>
+          <label>Needed by<input name="deadline" type="date"></label>
+        </div>
+        <label>Organisation / event<input name="org" placeholder="e.g. AI Summit Liverpool"></label>
+        <label>Notes for the printer<textarea name="notes" rows="3" placeholder="Pantone colours, names on the back, packing…"></textarea></label>
+        <label class="check"><input type="checkbox" name="rights" required> I own the rights to use this artwork</label>
+        <button class="btn btn-block" type="submit" id="submitOrder">Request proof &amp; pay later</button>
+        <p class="form-error" id="formError" role="alert"></p>
+      </form>
+    </section>
+
+    <section id="how" class="how wrap">
+      <h2>How it works</h2>
+      <ol class="how-steps">
+        <li><span>1</span><strong>Upload</strong>Add your logo, artwork or text and see it on the garment straight away.</li>
+        <li><span>2</span><strong>Proof</strong>We check the file quality and colours, then email you a proof, usually within 30 minutes.</li>
+        <li><span>3</span><strong>Print</strong>We print by DTG, screen print, vinyl or embroidery, depending on what suits the design.</li>
+        <li><span>4</span><strong>Collect</strong>Pick it up in Liverpool or have it couriered the same day.</li>
+      </ol>
+    </section>
+
+    <section id="faq" class="faq wrap">
+      <h2>Frequently asked questions</h2>
+      <details><summary>What file should I upload?</summary><p>A transparent PNG at 300&nbsp;dpi, or a vector file (SVG, AI, PDF), gives the sharpest print. The studio warns you if your image looks too low-resolution for the size you've chosen.</p></details>
+      <details><summary>Is there a minimum order?</summary><p>Not for DTG, vinyl or embroidery. You can order just one shirt. Screen printing starts at 20 items because of the set-up cost.</p></details>
+      <details><summary>Can you really print the same day?</summary><p>Yes. Choose the <em>Same day</em> option and most orders are ready in about 3 hours after you approve the proof.</p></details>
+      <details><summary>Can I add names or numbers to each shirt?</summary><p>Yes. Add a note on the order form and we'll send you a simple spreadsheet to fill in.</p></details>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>Concept demo built to show how an online design-upload page could work on printingliverpool.uk.</p>
+    </div>
+  </footer>
+
+  <div class="modal" id="confirmModal" hidden role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+    <div class="modal-card">
+      <h2 id="confirmTitle">Thanks, your order request has been received</h2>
+      <p>Reference <strong id="orderRef"></strong>. In the live version this would upload your artwork and send the order to the print shop. We'd email you a proof to approve.</p>
+      <img id="confirmMockup" alt="Mockup of your design">
+      <pre class="order-json" id="orderJson"></pre>
+      <div class="row">
+        <button type="button" class="btn btn-ghost" id="downloadOrder">Download order (JSON)</button>
+        <button type="button" class="btn" id="closeModal">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
