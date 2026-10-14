@@ -1,15 +1,23 @@
-# Printing Liverpool: Design Studio (concept demo)
+# go cre8: Design Studio (concept demo)
 
 This is a working prototype of a **"Design your own" page** that could be added to
-[printingliverpool.uk](https://printingliverpool.uk/t-shirt-printing-liverpool/).
+[gocre8.co.uk](https://www.gocre8.co.uk/portfolio-item/t-shirt-printing-clothing/), the site of the
+Liverpool creative print company go cre8 (Design · Print · Display · New Media).
 Customers can upload their artwork, see it on a garment, choose sizes and get a price
 straight away, without having to email back and forth for a quote.
 
-It was built as part of an offer to Printing Liverpool: a website upgrade in exchange for
-printing for an AI summit.
+It was built as part of an offer to go cre8: a website upgrade in exchange for
+printing for an AI summit. It uses go cre8's name, a CMYK-inspired colour scheme that suits a
+creative printer, and copy based on their services (short-run T-shirts, polos, hoodies, workwear
+and bags, with in-house graphic designers).
+
+> The brand colours and logo here are a placeholder wordmark, not go cre8's official artwork. Swap
+> in their real logo and colours with the CSS variables at the top of `css/styles.css`.
 
 > All prices, products and options are **example data** and easy to change in one place
 > (the top of `js/app.js`). The demo takes no real orders.
+
+![Desktop](docs/screenshot-desktop.png)
 
 | Mobile preview | Order request |
 | --- | --- |
@@ -20,13 +28,14 @@ printing for an AI summit.
 | Feature | Why it helps the shop |
 | --- | --- |
 | **Upload artwork** (drag & drop, PNG/JPG/SVG/WEBP) | Customers send print-ready files up front |
-| **Live preview** on a T-shirt, hoodie, sweatshirt or tote, in 8 colours, front and back | Fewer "what will it look like?" emails |
+| **Live preview** on a T-shirt, polo, hoodie, sweatshirt or tote, in 8 colours, front and back | Fewer "what will it look like?" emails |
 | **Drag, resize and rotate** the design inside the print area | Placement is agreed before the proof |
 | **Add text** (5 fonts, any colour), e.g. "AI SUMMIT 2026" | Covers simple event and staff shirts without artwork |
 | **Automatic resolution (DPI) check** | Warns customers about blurry images before they order |
 | **Print method choice**: DTG, screen, vinyl, embroidery, with minimums enforced | Screen-print orders are only accepted at 20+ items |
 | **Size and quantity grid** with plus-size surcharge and bulk discounts | An accurate quote straight away, 24/7 |
-| **Same-day / next-day options** and collect or courier | Shows off the shop's same-day service |
+| **Artwork help add-on** (+£25) | Sells go cre8's in-house design service alongside the print |
+| **Standard / Express / Rush turnaround** and studio collection or UK courier | Customers set their own deadline, and faster jobs carry a premium |
 | **Download mockup PNG** | Customers can share the design with their team for sign-off |
 | **Order request** with a structured order record (JSON) and mockup | Gives the print team everything they need in one place |
 

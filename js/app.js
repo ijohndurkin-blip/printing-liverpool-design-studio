@@ -1,4 +1,4 @@
-/* Printing Liverpool – Design Studio concept demo.
+/* go cre8 – Design Studio concept demo.
  * Plain JavaScript, no build step. All prices below are illustrative. */
 (function () {
   'use strict';
@@ -27,6 +27,10 @@
       name: 'T-shirt', from: 6, colours: SHIRT_COLOURS, sizes: APPAREL_SIZES,
       area: { front: [0.34, 0.22, 0.32, 0.44], back: [0.33, 0.18, 0.34, 0.50] }, widthIn: 12,
     },
+    polo: {
+      name: 'Polo shirt', from: 9, colours: SHIRT_COLOURS, sizes: APPAREL_SIZES,
+      area: { front: [0.36, 0.36, 0.28, 0.34], back: [0.33, 0.18, 0.34, 0.50] }, widthIn: 10,
+    },
     hoodie: {
       name: 'Hoodie', from: 18, colours: SHIRT_COLOURS, sizes: APPAREL_SIZES,
       area: { front: [0.35, 0.25, 0.30, 0.34], back: [0.33, 0.33, 0.34, 0.40] }, widthIn: 11,
@@ -50,7 +54,8 @@
   };
 
   const DISCOUNTS = [[100, 0.20], [50, 0.15], [25, 0.10], [10, 0.05]];
-  const TURNAROUND = { standard: 0, nextday: 0.15, sameday: 0.25 };
+  const TURNAROUND = { standard: 0, express: 0.15, rush: 0.25 };
+  const DESIGN_HELP = 25;
   const DELIVERY = { collect: 0, courier: 8 };
 
   // ---------------------------------------------------------------------------
@@ -73,6 +78,15 @@
         return `<path fill="${hex}" ${s} d="M195,40 ${neck} L382,66 L472,152 L420,208 L375,172 L375,468 L125,468 L125,172 L80,208 L28,152 L118,66 Z"/>` +
           `<path fill="none" stroke="${detail}" stroke-width="6" d="M195,40 ${neck}"/>` +
           `<path fill="none" stroke="${detail}" stroke-width="2" d="M125,172 L118,66 M375,172 L382,66"/>`;
+      }
+      case 'polo': {
+        const body = `<path fill="${hex}" ${s} d="M195,40 Q250,60 305,40 L382,66 L462,140 L418,190 L375,160 L375,468 L125,468 L125,160 L82,190 L38,140 L118,66 Z"/>`;
+        if (side === 'back') return body + `<path fill="none" stroke="${detail}" stroke-width="12" d="M195,42 Q250,30 305,42"/>`;
+        return body +
+          `<rect x="238" y="62" width="24" height="100" rx="3" fill="${detail}" ${s}/>` +
+          `<circle cx="250" cy="95" r="4" fill="${stroke}"/><circle cx="250" cy="125" r="4" fill="${stroke}"/>` +
+          `<path fill="${hex}" ${s} d="M195,38 L250,62 L232,112 L180,66 Z"/>` +
+          `<path fill="${hex}" ${s} d="M305,38 L250,62 L268,112 L320,66 Z"/>`;
       }
       case 'hoodie': {
         const hood = side === 'front'
@@ -312,15 +326,16 @@
     const discount = (garments + printing) * rate;
     const rush = (subtotal - discount) * TURNAROUND[turnaround];
     const ship = qty ? DELIVERY[delivery] : 0;
-    const total = subtotal - discount + rush + ship;
+    const design = $('#designHelp').checked ? DESIGN_HELP : 0;
+    const total = subtotal - discount + rush + ship + design;
 
     const warnings = [];
     if (!sides.length) warnings.push('Add a design or some text to at least one side.');
     if (!qty) warnings.push('Enter how many you need in step 4.');
     if (qty && qty < m.min) warnings.push(`${m.name} needs at least ${m.min} items. Switch to DTG or vinyl for smaller runs.`);
-    if (state.method === 'screen' && turnaround === 'sameday') warnings.push('Same-day screen printing depends on how busy we are. We will confirm when we send your proof.');
+    if (state.method === 'screen' && turnaround === 'rush') warnings.push('Rush screen printing depends on studio availability. We will confirm when we send your proof.');
 
-    return { p, m, qty, plusQty, sides, garments, printing, setup, rate, discount, rush, ship, total, turnaround, delivery, warnings };
+    return { p, m, qty, plusQty, sides, garments, printing, setup, rate, discount, rush, ship, design, total, turnaround, delivery, warnings };
   }
 
   function updateQuote() {
@@ -331,8 +346,9 @@
     ];
     if (q.setup) rows.push(['One-off setup', gbp(q.setup)]);
     if (q.discount) rows.push([`Bulk discount (${q.rate * 100}%)`, '−' + gbp(q.discount), 'discount']);
-    if (q.rush) rows.push([q.turnaround === 'sameday' ? 'Same-day express' : 'Next-day express', gbp(q.rush)]);
-    rows.push([q.delivery === 'courier' ? 'Same-day courier' : 'Collection', q.ship ? gbp(q.ship) : 'Free']);
+    if (q.rush) rows.push([q.turnaround === 'rush' ? 'Rush (next working day)' : 'Express (2–3 days)', gbp(q.rush)]);
+    if (q.design) rows.push(['Artwork help from our designers', gbp(q.design)]);
+    rows.push([q.delivery === 'courier' ? 'UK courier' : 'Studio collection', q.ship ? gbp(q.ship) : 'Free']);
     el.summaryList.innerHTML = rows.map(([k, v, cls]) => `<dt>${k}</dt><dd class="${cls || ''}">${v}</dd>`).join('');
     el.totalPrice.textContent = gbp(q.total);
     el.perItem.textContent = q.qty ? `${gbp(q.total / q.qty)} per item` : '';
@@ -390,7 +406,7 @@
     const hex = PRODUCTS[state.product].colours[state.colour].hex;
     const n = parseInt(hex.slice(1), 16);
     const lum = (0.299 * (n >> 16) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255)) / 255;
-    if (lum > 0.6) return hex === '#ffffff' || hex === '#efe6d2' ? '#c8102e' : '#16181d';
+    if (lum > 0.6) return hex === '#ffffff' || hex === '#efe6d2' ? '#e6007e' : '#1b1b1f';
     return '#ffffff';
   }
 
@@ -500,14 +516,14 @@
   // Sample design so the demo works with one click
   // ---------------------------------------------------------------------------
   const SAMPLE_SVG = svgDoc(
-    '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff3b5c"/><stop offset="1" stop-color="#7b2ff7"/></linearGradient></defs>' +
+    '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e6007e"/><stop offset="1" stop-color="#00a0e3"/></linearGradient></defs>' +
     '<circle cx="250" cy="200" r="150" fill="none" stroke="url(#g)" stroke-width="18"/>' +
     '<g stroke="url(#g)" stroke-width="10" stroke-linecap="round">' +
       '<path d="M170 200 H220 M280 200 H330 M250 120 V170 M250 230 V280 M195 145 L225 175 M305 145 L275 175 M195 255 L225 225 M305 255 L275 225"/></g>' +
     '<g fill="url(#g)"><circle cx="250" cy="200" r="28"/><circle cx="170" cy="200" r="12"/><circle cx="330" cy="200" r="12"/><circle cx="250" cy="120" r="12"/><circle cx="250" cy="280" r="12"/>' +
       '<circle cx="195" cy="145" r="10"/><circle cx="305" cy="145" r="10"/><circle cx="195" cy="255" r="10"/><circle cx="305" cy="255" r="10"/></g>' +
     '<text x="250" y="420" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="64" fill="url(#g)">AI SUMMIT</text>' +
-    '<text x="250" y="470" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" font-size="30" letter-spacing="10" fill="#7b2ff7">LIVERPOOL 2026</text>'
+    '<text x="250" y="470" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" font-size="30" letter-spacing="10" fill="#00a0e3">LIVERPOOL 2026</text>'
   );
 
   function loadSample() {
@@ -575,7 +591,7 @@
     });
 
     $('#showGuides').addEventListener('change', (e) => { state.showGuides = e.target.checked; el.printArea.classList.toggle('guides', state.showGuides); });
-    $$('input[name=turnaround], input[name=delivery]').forEach((i) => i.addEventListener('change', updateQuote));
+    $$('input[name=turnaround], input[name=delivery], #designHelp').forEach((i) => i.addEventListener('change', updateQuote));
 
     $('#downloadMockup').addEventListener('click', async () => {
       download(await renderMockup(state.side), `mockup-${state.product}-${state.side}.png`);
@@ -597,7 +613,7 @@
       err.textContent = '';
 
       const data = Object.fromEntries(new FormData(form));
-      const ref = 'PL-' + Date.now().toString(36).toUpperCase().slice(-6);
+      const ref = 'GC8-' + Date.now().toString(36).toUpperCase().slice(-6);
       lastOrder = {
         reference: ref,
         createdAt: new Date().toISOString(),
@@ -611,6 +627,7 @@
             : { type: 'text', text: l.text, font: l.font, colour: l.color, x: +l.x.toFixed(3), y: +l.y.toFixed(3), rotation: l.rotation }),
         })),
         sizes: Object.fromEntries(Object.entries(state.qty).filter(([, v]) => v > 0)),
+        artworkHelp: !!q.design,
         turnaround: q.turnaround,
         delivery: q.delivery,
         totalGBP: +q.total.toFixed(2),
